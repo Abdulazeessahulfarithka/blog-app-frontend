@@ -1,13 +1,25 @@
+// Home.js
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 function Home() {
+  const navigate = useNavigate();
   const [currentSlide, setCurrentSlide] = useState(0);
+  
   const slides = [
     { src: "https://www.shutterstock.com/image-photo/blogging-concept-web-blog-social-600nw-2484136087.jpg", alt: "First slide" },
     { src: "https://media.istockphoto.com/id/1198931639/photo/writing-a-blog-blogger-influencer-reading-text-on-screen.jpg?s=612x612&w=0&k=20&c=4FJ_fzzZYqBoGG-RY8fcohpaOKKwnnI-ik58cPy6t-g=", alt: "Second slide" },
     { src: "https://www.microsoft.com/en-us/microsoft-365/blog/wp-content/uploads/sites/2/2024/11/M365_372575_Blog_241105-1024x576.webp", alt: "Third slide" }
   ];
+
+  const handleCreateBlogClick = () => {
+    try {
+      // Navigate to login page with state to remember the intended action
+      navigate('/login', { state: { fromCreateBlog: true } });
+    } catch (error) {
+      console.error("Navigation error:", error);
+    }
+  };
 
   useEffect(() => {
     const slideInterval = setInterval(() => {
@@ -15,7 +27,7 @@ function Home() {
     }, 4000);
 
     return () => clearInterval(slideInterval);
-  }, [slides.length]);
+  }, []);
 
   return (
     <>
@@ -23,10 +35,12 @@ function Home() {
         <h1 className="text-2xl font-bold">Passionate to Work</h1>
         <span className="text-gray-600">They are focused, work diligently, and produce high-quality results</span>
         <div className="mt-4">
-        <Link   className="bg-green-500 text-white font-semibold py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-green-600 focus:ring-opacity-50" to="blog-create">
-  Create Blog
-</Link>
-
+          <button 
+            onClick={handleCreateBlogClick} 
+            className="bg-green-500 text-white font-semibold py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-green-600 focus:ring-opacity-50"
+          >
+            Create Blog
+          </button>
         </div>
       </div>
 
@@ -53,7 +67,6 @@ function Home() {
           ))}
         </div>
       </div>
-      
     </>
   );
 }
