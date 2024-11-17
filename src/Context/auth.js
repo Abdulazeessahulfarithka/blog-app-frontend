@@ -8,8 +8,12 @@ const AuthContext = createContext();
 const AuthProvider = ({ children }) => {
   const [auth, setAuth] = useState({ user: null, token: '' });
 
-  // Set default axios header for Authorization token
-  axios.defaults.headers.common['Authorization'] = auth?.token;
+  useEffect(() => {
+    // Set default axios header for Authorization token only once
+    if (auth?.token) {
+      axios.defaults.headers.common['Authorization'] = `Bearer ${auth.token}`;
+    }
+  }, [auth.token]); // Run this effect only when auth.token changes
 
   useEffect(() => {
     // Check for saved authentication data in localStorage
